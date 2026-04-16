@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankBlazor.Client", "BankBl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankBlazor.api", "BankBlazor.api\BankBlazor.api.csproj", "{22AABAB8-3A97-499D-B17F-39AD3A3EDE3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankBlazor-ClassLibrary", "BankBlazor-ClassLibrary\BankBlazor-ClassLibrary.csproj", "{75A8AA5C-DCA8-4C26-8434-9CDC5F491A73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{22AABAB8-3A97-499D-B17F-39AD3A3EDE3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22AABAB8-3A97-499D-B17F-39AD3A3EDE3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22AABAB8-3A97-499D-B17F-39AD3A3EDE3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75A8AA5C-DCA8-4C26-8434-9CDC5F491A73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75A8AA5C-DCA8-4C26-8434-9CDC5F491A73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75A8AA5C-DCA8-4C26-8434-9CDC5F491A73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75A8AA5C-DCA8-4C26-8434-9CDC5F491A73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
