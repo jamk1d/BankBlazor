@@ -1,6 +1,6 @@
 ﻿namespace BankBlazor_ClassLibrary
 {
-    public class Class1
+    public class CustomerDto
     {
 
     }
