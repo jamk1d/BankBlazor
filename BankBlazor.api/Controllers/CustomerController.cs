@@ -3,12 +3,9 @@
 namespace BankBlazor.api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class CustomerController : Controller
+    [Route("api/[controller]")]
+    public class CustomerController : ControllerBase
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+       
     }
 }
