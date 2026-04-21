@@ -1,6 +1,8 @@
-﻿using BankBlazor.api.Services.Interfaces;
+﻿using BankBlazor.api.Models;
+using BankBlazor.api.Services.Interfaces;
 using BankBlazor_ClassLibrary.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Validations;
 
 namespace BankBlazor.api.Controllers
 {
@@ -16,7 +18,7 @@ namespace BankBlazor.api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedResult>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize 10)
+        public async Task<ActionResult<PagedResult>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var customerEntites = await _customerService.GetAllCustomers(pageNumber, pageSize);
 
@@ -32,13 +34,29 @@ namespace BankBlazor.api.Controllers
                 Customers = customerDtos,
                 PageNumber = pageNumber,
                 PageSize = pageSize,
-                TotalCount = await _customerService.Ge
-            }
+                TotalCount = await _customerService.GetTotalCustomerCount()
+            };
+
+            return Ok(pagedResult);
 
         }
 
-   
+        [HttpGet("{id}")]
 
+        public async Task<ActionResult> Get(int id)
+        {
+            var customer = await _customerService.GetCustomer(id);
+
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(customer);
+
+        }
 
     }
-}
+
+}   
+

@@ -1,5 +1,7 @@
 
 using BankBlazor.api.Data;
+using BankBlazor.api.Services;
+using BankBlazor.api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankBlazor.api
@@ -16,6 +18,7 @@ namespace BankBlazor.api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddDbContext<BankBlazorContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("BankBlazor")));
             var app = builder.Build();
