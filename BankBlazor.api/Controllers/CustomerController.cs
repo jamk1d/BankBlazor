@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BankBlazor.api.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BankBlazor.api.Controllers
 {
@@ -6,6 +7,15 @@ namespace BankBlazor.api.Controllers
     [Route("api/[controller]")]
     public class CustomerController : ControllerBase
     {
-       
+        private readonly ICustomerService _customerService;
+
+        public CustomerController(ICustomerService customerService)
+        {
+            _customerService = customerService;
+        }
+
+
+
+
     }
 }

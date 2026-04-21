@@ -1,6 +1,6 @@
 ﻿namespace BankBlazor.api.Enums
 {
-    public enum StatusCode
+    public enum ResponseCode
     {
         Success = 200,
         Created = 201,

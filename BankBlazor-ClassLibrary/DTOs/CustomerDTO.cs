@@ -1,4 +1,4 @@
-﻿namespace BankBlazor_ClassLibrary
+﻿namespace BankBlazor_ClassLibrary.DTOs
 {
     public class CustomerDto
     {
@@ -17,6 +17,8 @@
         public string? Telephonenumber { get; set; }
 
         public string? Emailaddress { get; set; }
+
+        public DateOnly? Birthday { get; set; }
 
 
     }
