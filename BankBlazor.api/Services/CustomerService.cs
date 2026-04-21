@@ -18,15 +18,20 @@ namespace BankBlazor.api.Services
             _dbContext = dbContext;
         }
 
-        public async Task<List<Customer>> GetAllCustomers(int pageNumber, int pageSize)
+        public async Task<List<CustomerViewDTO>> GetAllCustomers(int pageNumber, int pageSize)
         {
             // Beräknar vilken produktindex som ska startas från för den aktuella sidan
-            var products = await _dbContext.Customers
+            var customers = await _dbContext.Customers
                 .Skip((pageNumber - 1) * pageSize)  // Hoppar över tidigare sidor
                 .Take(pageSize)  // Tar endast så många produkter som behövs för sidan
                 .ToListAsync();
 
-            return products;
+            return customers.Select(c => new CustomerViewDTO
+            {
+                Givenname = c.Givenname,
+                Surname = c.Surname,
+                CustomerId = c.CustomerId
+            }).ToList();
 
         }
 
@@ -37,11 +42,11 @@ namespace BankBlazor.api.Services
             return customers;
         }
 
-        public async Task<Customer> GetCustomer(int id)
+        public async Task<CustomerDTO> GetCustomer(int id)
         {
             var Customer = await _dbContext.Customers.Include(c => c.Dispositions).ThenInclude(C => C.Account).FirstOrDefaultAsync(c => c.CustomerId == id);
 
-            var dto = new CustomerDto
+            var dto = new CustomerDTO
             {
                 Givenname = Customer.Givenname,
                 Surname = Customer.Surname,
@@ -50,12 +55,18 @@ namespace BankBlazor.api.Services
                 Country = Customer.Country,
                 Telephonenumber = Customer.Telephonenumber,
                 Emailaddress = Customer.Emailaddress,
-                Birthday = Customer.Birthday
+                Birthday = Customer.Birthday,
+                Accounts = Customer.Dispositions.Select(d => new AccountDTO
+                {
+                    AccountId = d.Account.AccountId,
+                    Balance = d.Account.Balance
+                }).ToList()
+                
 
 
             };
 
-            return Customer;
+            return dto;
         }
 
         public async Task<ResponseCode> AddCustomer(Customer customer)
@@ -76,6 +87,10 @@ namespace BankBlazor.api.Services
             return ResponseCode.Accepted;
         }
 
+        public async Task<int> GetTotalCustomerCount()
+        {
+            return await _dbContext.Customers.CountAsync();
+        }
             
 
     }
