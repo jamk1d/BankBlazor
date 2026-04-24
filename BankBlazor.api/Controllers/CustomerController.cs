@@ -18,20 +18,13 @@ namespace BankBlazor.api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedResult>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<PagedResult<CustomerViewDTO>>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var customerEntites = await _customerService.GetAllCustomers(pageNumber, pageSize);
 
-            var customerDtos = customerEntites.Select(customerEntity => new CustomerViewDTO
+            var pagedResult = new PagedResult<CustomerViewDTO>
             {
-                Givenname = customerEntity.Givenname,
-                Surname = customerEntity.Surname,
-                CustomerId = customerEntity.CustomerId
-            }).ToList();
-
-            var pagedResult = new PagedResult
-            {
-                Customers = customerDtos,
+                Customers = customerEntites,
                 PageNumber = pageNumber,
                 PageSize = pageSize,
                 TotalCount = await _customerService.GetTotalCustomerCount()
@@ -55,6 +48,19 @@ namespace BankBlazor.api.Controllers
             return Ok(customer);
 
         }
+
+
+        [HttpPost]
+
+        public async Task<ActionResult> post(Customer customer)
+        {
+
+        }
+
+
+        [HttpPut ("{id}")]
+
+       
 
     }
 

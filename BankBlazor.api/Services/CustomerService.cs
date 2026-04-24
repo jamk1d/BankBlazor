@@ -5,6 +5,7 @@ using BankBlazor.api.Data;
 using BankBlazor.api.Models;
 using BankBlazor_ClassLibrary;
 using BankBlazor_ClassLibrary.DTOs;
+using Azure.Identity;
 
 
 namespace BankBlazor.api.Services
@@ -48,6 +49,7 @@ namespace BankBlazor.api.Services
 
             var dto = new CustomerDTO
             {
+                Gender = Customer.Gender,
                 Givenname = Customer.Givenname,
                 Surname = Customer.Surname,
                 Streetaddress = Customer.Streetaddress,
@@ -69,16 +71,51 @@ namespace BankBlazor.api.Services
             return dto;
         }
 
-        public async Task<ResponseCode> AddCustomer(Customer customer)
+        public async Task<ResponseCode> AddCustomer(CustomerCreateDTO customer)
         {
-            await _dbContext.Customers.AddAsync(customer);
+            var newCustomer = new Customer
+            {
+                Givenname = customer.Givenname,
+                Surname = customer.Surname,
+                Streetaddress = customer.Streetaddress,
+                City = customer.City,
+                Country = customer.Country,
+                Telephonenumber = customer.Telephonenumber,
+                Emailaddress = customer.Emailaddress,
+                Birthday = customer.Birthday,
+                Zipcode = customer.Zipcode,
+                CountryCode = customer.CountryCode,
+                Gender = customer.Gender,
+                Telephonecountrycode = customer.Telephonecountrycode
+            };
+
+            var newAccount = new Account
+            {
+                Frequency = "Monthly",
+                Created = DateOnly.FromDateTime(DateTime.Now),
+                Balance = 0,
+            };
+
+            var newDispostion = new Disposition
+            {
+                Type = "Owner",
+                Customer = newCustomer,
+                Account = newAccount
+            };
+
+            await _dbContext.Customers.AddAsync(newCustomer);
+            await _dbContext.Accounts.AddAsync(newAccount);
+            await _dbContext.Dispositions.AddAsync(newDispostion);
             await _dbContext.SaveChangesAsync();
 
             return ResponseCode.Created;
         }
 
-        public async Task<ResponseCode> UpdateCustomer(Customer customer)
+        public async Task<ResponseCode> UpdateCustomer(int id, CustomerCreateDTO customer)
         {
+            var customer = await _dbContext.Customers.FirstOrDefaultAsync(C => C.CustomerId == id);
+
+
             return ResponseCode.Accepted;
         }
 

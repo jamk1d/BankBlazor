@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BankBlazor_ClassLibrary.DTOs
 {
-    public class PagedResult
+    public class PagedResult<T> where T : class
     {
-        public List<CustomerViewDTO> Customers { get; set; } = new();
+        public List<T> Customers { get; set; } = new();
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int TotalCount { get; set; }
