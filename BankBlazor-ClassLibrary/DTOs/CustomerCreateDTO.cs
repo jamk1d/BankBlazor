@@ -22,8 +22,6 @@ namespace BankBlazor_ClassLibrary.DTOs
 
         public string Country { get; set; } = null!;
 
-        public string CountryCode { get; set; } = null!;
-
         public DateOnly? Birthday { get; set; }
 
         public string? Telephonecountrycode { get; set; }

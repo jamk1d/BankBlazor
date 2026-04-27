@@ -1,4 +1,5 @@
-﻿using BankBlazor.api.Models;
+﻿using BankBlazor.api.Enums;
+using BankBlazor.api.Models;
 using BankBlazor.api.Services.Interfaces;
 using BankBlazor_ClassLibrary.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -51,12 +52,19 @@ namespace BankBlazor.api.Controllers
 
 
         [HttpPost]
-
+            
         public async Task<ActionResult> Post(CustomerCreateDTO customer)
         {
             var result = await _customerService.AddCustomer(customer);
 
-            return Ok();
+            ResponseCode response = await _customerService.AddCustomer(customer);
+
+            if(response == ResponseCode.Created)
+            {
+                return Created();
+            }
+
+            return NoContent();
         }
 
 
