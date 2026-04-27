@@ -6,6 +6,7 @@ using BankBlazor.api.Models;
 using BankBlazor_ClassLibrary;
 using BankBlazor_ClassLibrary.DTOs;
 using Azure.Identity;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 
 namespace BankBlazor.api.Services
@@ -111,16 +112,42 @@ namespace BankBlazor.api.Services
             return ResponseCode.Created;
         }
 
-        public async Task<ResponseCode> UpdateCustomer(int id, CustomerCreateDTO customer)
+        public async Task<ResponseCode> UpdateCustomer(int id, CustomerUpdateDTO customer)
         {
-            var customer = await _dbContext.Customers.FirstOrDefaultAsync(C => C.CustomerId == id);
+            var updateCustomer = await _dbContext.Customers.FirstOrDefaultAsync(C => C.CustomerId == id);
 
+            if (updateCustomer == null)
+            {
+                return ResponseCode.NotFound;
+            }
 
+            updateCustomer.Givenname = customer.Givenname;
+            updateCustomer.Surname = customer.Surname;
+            updateCustomer.Telephonenumber = customer.Telephonenumber;
+            updateCustomer.Gender = customer.Gender;
+            updateCustomer.Streetaddress = customer.Streetaddress;
+            updateCustomer.City = customer.City;
+            updateCustomer.Emailaddress = customer.Emailaddress;
+            updateCustomer.Birthday = customer.Birthday;
+            updateCustomer.Zipcode = customer.Zipcode;
+            updateCustomer.Telephonecountrycode = customer.Telephonecountrycode;
+
+            await _dbContext.SaveChangesAsync();
             return ResponseCode.Accepted;
         }
 
         public async Task<ResponseCode> DeleteCustomer(int id)
         {
+            var deleteCustomer = await _dbContext.Customers.FirstOrDefaultAsync(C => C.CustomerId == id);
+
+            if(deleteCustomer == null)
+            {
+                return ResponseCode.NotFound;
+            }
+
+            _dbContext.Remove(deleteCustomer);
+            await _dbContext.SaveChangesAsync();
+
             return ResponseCode.Accepted;
         }
 

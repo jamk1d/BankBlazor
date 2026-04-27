@@ -11,7 +11,7 @@ namespace BankBlazor.api.Services.Interfaces
         Task<List<CustomerViewDTO>> GetAllCustomers(int pageNumber, int pageSize);
         Task<CustomerDTO> GetCustomer(int id);
         Task<ResponseCode> AddCustomer(CustomerCreateDTO customer);
-        Task<ResponseCode> UpdateCustomer(Customer customer);
+        Task<ResponseCode> UpdateCustomer(int id, CustomerUpdateDTO customer);
         Task<ResponseCode> DeleteCustomer(int id);
         Task<int> GetTotalCustomerCount();
 

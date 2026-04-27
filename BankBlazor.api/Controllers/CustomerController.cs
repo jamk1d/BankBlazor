@@ -52,15 +52,35 @@ namespace BankBlazor.api.Controllers
 
         [HttpPost]
 
-        public async Task<ActionResult> post(Customer customer)
+        public async Task<ActionResult> Post(CustomerCreateDTO customer)
         {
+            var result = await _customerService.AddCustomer(customer);
 
+            return Ok();
         }
 
 
         [HttpPut ("{id}")]
 
+        public async Task<ActionResult> Put(int id, CustomerUpdateDTO customer)
+        {
+            var result = await _customerService.UpdateCustomer(id, customer);
+
+            return Ok();
+        }
+
+        [HttpDelete ("{id}")]
+
+        public async Task<ActionResult> Delete(int id)
+        {
+            var result = await _customerService.DeleteCustomer(id);
+
+            return Ok();
+
+        }
        
+
+
 
     }
 
