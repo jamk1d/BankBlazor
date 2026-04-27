@@ -138,13 +138,19 @@ namespace BankBlazor.api.Services
 
         public async Task<ResponseCode> DeleteCustomer(int id)
         {
-            var deleteCustomer = await _dbContext.Customers.FirstOrDefaultAsync(C => C.CustomerId == id);
+            var deleteCustomer = await _dbContext.Customers.Include(C => C.Dispositions)
+                .ThenInclude(C => C.Account).FirstOrDefaultAsync(C => C.CustomerId == id);
 
             if(deleteCustomer == null)
             {
                 return ResponseCode.NotFound;
             }
 
+
+            var accounts = deleteCustomer.Dispositions.Select(C => C.Account).ToList();
+
+            _dbContext.RemoveRange(deleteCustomer.Dispositions);
+            _dbContext.RemoveRange(accounts);
             _dbContext.Remove(deleteCustomer);
             await _dbContext.SaveChangesAsync();
 
