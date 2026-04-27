@@ -14,15 +14,17 @@ namespace BankBlazor_ClassLibrary.DTOs
 
         public string Surname { get; set; } = null!;
 
+        public DateOnly? Birthday { get; set; }
+
+        public string Country { get; set; } = null!;
+
         public string Streetaddress { get; set; } = null!;
 
         public string City { get; set; } = null!;
 
         public string Zipcode { get; set; } = null!;
 
-        public string Country { get; set; } = null!;
-
-        public DateOnly? Birthday { get; set; }
+        public string CountryCode { get; set; } = null!;
 
         public string? Telephonecountrycode { get; set; }
 

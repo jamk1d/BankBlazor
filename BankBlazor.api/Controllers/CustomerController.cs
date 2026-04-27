@@ -55,7 +55,6 @@ namespace BankBlazor.api.Controllers
             
         public async Task<ActionResult> Post(CustomerCreateDTO customer)
         {
-            var result = await _customerService.AddCustomer(customer);
 
             ResponseCode response = await _customerService.AddCustomer(customer);
 
@@ -73,6 +72,11 @@ namespace BankBlazor.api.Controllers
         public async Task<ActionResult> Put(int id, CustomerUpdateDTO customer)
         {
             var result = await _customerService.UpdateCustomer(id, customer);
+            
+            if (result == ResponseCode.NotFound)
+            {
+                return NotFound();
+            }
 
             return Ok();
         }
@@ -82,6 +86,11 @@ namespace BankBlazor.api.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var result = await _customerService.DeleteCustomer(id);
+
+            if (result == ResponseCode.NotFound)
+            {
+                return NotFound();
+            }
 
             return Ok();
 

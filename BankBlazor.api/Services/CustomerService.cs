@@ -81,6 +81,7 @@ namespace BankBlazor.api.Services
                 Streetaddress = customer.Streetaddress,
                 City = customer.City,
                 Country = customer.Country,
+                CountryCode = customer.CountryCode,
                 Telephonenumber = customer.Telephonenumber,
                 Emailaddress = customer.Emailaddress,
                 Birthday = customer.Birthday,
