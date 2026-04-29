@@ -33,6 +33,7 @@ namespace BankBlazor.api.Services
 
             var dto = new AccountDTO
             {
+                AccountId = account.AccountId,
                 Balance =  account.Balance
             };
 
@@ -55,7 +56,7 @@ namespace BankBlazor.api.Services
             {
                 AccountId = account.AccountId,
                 Type = "Debit",
-                Amount = ammount,
+                Amount = amount,
                 Date = DateOnly.FromDateTime(DateTime.Now),
                 Operation = "Deposit",
                 Balance = account.Balance,
@@ -83,7 +84,7 @@ namespace BankBlazor.api.Services
                 Type = "Debit",
                 Amount = amount,
                 Date = DateOnly.FromDateTime(DateTime.Now),
-                Operation = "Withdrawal in Cash",
+                Operation = "Withdrawal",
                 Balance = account.Balance,
             };
 
