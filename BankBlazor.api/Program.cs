@@ -19,6 +19,7 @@ namespace BankBlazor.api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<ICustomerService, CustomerService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddDbContext<BankBlazorContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("BankBlazor")));
             var app = builder.Build();
