@@ -21,7 +21,7 @@ namespace BankBlazor.api.Services
         {
             _dbContext = dbContext;
         }
-        public async Task<AccountviewDTO> GetAccountBalance(int accountId)
+        public async Task<AccountDTO> GetAccountBalance(int accountId)
         {
             var account = await _dbContext.Accounts.FirstOrDefaultAsync(a => a.AccountId == accountId);
 
@@ -31,7 +31,7 @@ namespace BankBlazor.api.Services
             }
             
 
-            var dto = new AccountviewDTO
+            var dto = new AccountDTO
             {
                 Balance =  account.Balance
             };

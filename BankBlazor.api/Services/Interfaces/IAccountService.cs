@@ -5,7 +5,7 @@ namespace BankBlazor.api.Services.Interfaces
 {
     public interface IAccountService
     {
-        Task<AccountviewDTO> GetAccountBalance(int accountId);
+        Task<AccountDTO> GetAccountBalance(int accountId);
 
         Task<ResponseCode> Deposit(int accountId, decimal ammount);
 

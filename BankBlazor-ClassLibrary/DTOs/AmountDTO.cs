@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace BankBlazor_ClassLibrary.DTOs
 {
-    public class AccountviewDTO
+    public class AmountDTO
     {
-        public int AccountId { get; set; }
-        public decimal Balance { get; set; }
+        public decimal Amount { get; set; }
     }
 }
