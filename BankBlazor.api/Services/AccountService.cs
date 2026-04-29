@@ -40,7 +40,7 @@ namespace BankBlazor.api.Services
         }
         
 
-        public async Task<ResponseCode> Deposit(int accountId, decimal ammount)
+        public async Task<ResponseCode> Deposit(int accountId, decimal amount)
         {
             var account = await _dbContext.Accounts.FirstOrDefaultAsync(a => a.AccountId == accountId);
 
@@ -49,7 +49,7 @@ namespace BankBlazor.api.Services
                 return ResponseCode.NotFound;
             }
 
-            account.Balance += ammount;
+            account.Balance += amount;
 
             var newTransaction = new Transaction
             {
@@ -66,7 +66,7 @@ namespace BankBlazor.api.Services
             return ResponseCode.Success;
         }
 
-        public async Task<ResponseCode> Withdraw(int accountId, decimal ammount)
+        public async Task<ResponseCode> Withdraw(int accountId, decimal amount)
         {
             var account = await _dbContext.Accounts.FirstOrDefaultAsync(a => a.AccountId == accountId);
 
@@ -75,13 +75,13 @@ namespace BankBlazor.api.Services
                 return ResponseCode.NotFound;
             }
 
-            account.Balance -= ammount;
+            account.Balance -= amount;
 
             var newTransaction = new Transaction
             {
                 AccountId = account.AccountId,
                 Type = "Debit",
-                Amount = ammount,
+                Amount = amount,
                 Date = DateOnly.FromDateTime(DateTime.Now),
                 Operation = "Withdrawal in Cash",
                 Balance = account.Balance,
@@ -95,7 +95,7 @@ namespace BankBlazor.api.Services
         }
 
 
-        public async Task<ResponseCode> Transfer(int fromAccountId, int toAccountId, decimal ammount)
+        public async Task<ResponseCode> Transfer(int fromAccountId, int toAccountId, decimal amount)
         {
             var account1 = await _dbContext.Accounts.FirstOrDefaultAsync(a => a.AccountId == fromAccountId);
 
@@ -111,19 +111,19 @@ namespace BankBlazor.api.Services
                 return ResponseCode.NotFound;
             }
 
-            if (account1.Balance < ammount)
+            if (account1.Balance < amount)
             {
                 return ResponseCode.BadRequest;
             }
 
-            account1.Balance -= ammount;
-            account2.Balance += ammount;
+            account1.Balance -= amount;
+            account2.Balance += amount;
 
             var newTransaction = new Transaction
             {
                 AccountId = account1.AccountId,
                 Type = "Debit",
-                Amount = ammount,
+                Amount = amount,
                 Date = DateOnly.FromDateTime(DateTime.Now),
                 Operation = "Transfer To Another Bank",
                 Balance = account1.Balance
@@ -133,7 +133,7 @@ namespace BankBlazor.api.Services
             {
                 AccountId = account2.AccountId,
                 Type = "Debit",
-                Amount = ammount,
+                Amount = amount,
                 Date = DateOnly.FromDateTime(DateTime.Now),
                 Operation = "Transfer from Another Bank",
                 Balance = account2.Balance
