@@ -26,21 +26,25 @@
             {
                 <div class="account">
                     <p><strong>Account ID:</strong> @account.AccountId</p>
-                    <p><strong>Balance:</strong> @account.Balance</p>
+                    <p><strong>Balance:</strong> @account.Balance kr</p>
 
                     <div>
-                        <input type="number" @bind="depositAmount" placeholder="Amount" />
+                        <label>Deposit Amount</label>
+                        <input type="number" @bind="depositAmount" placeholder="Enter amount" />
                         <button @onclick="() => Deposit(account.AccountId)">Deposit</button>
                     </div>
 
                     <div>
-                        <input type="number" @bind="withdrawAmount" placeholder="Amount" />
+                        <label>Withdraw Amount</label>
+                        <input type="number" @bind="withdrawAmount" placeholder="Enter amount" />
                         <button @onclick="() => Withdraw(account.AccountId)">Withdraw</button>
                     </div>
 
                     <div>
-                        <input type="number" @bind="transferAmount" placeholder="Amount" />
-                        <input type="number" @bind="toAccountId" placeholder="To Account ID" />
+                        <label>Transfer Amount</label>
+                        <input type="number" @bind="transferAmount" placeholder="Enter amount" />
+                        <label>To Account ID</label>
+                        <input type="number" @bind="toAccountId" placeholder="Enter account ID" />
                         <button @onclick="() => Transfer(account.AccountId)">Transfer</button>
                     </div>
                 </div>
