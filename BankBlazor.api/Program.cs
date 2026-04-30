@@ -18,10 +18,23 @@ namespace BankBlazor.api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
+
             builder.Services.AddDbContext<BankBlazorContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("BankBlazor")));
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -35,6 +48,7 @@ namespace BankBlazor.api
 
             app.UseAuthorization();
 
+            app.UseCors("AllowAll");
 
             app.MapControllers();
 

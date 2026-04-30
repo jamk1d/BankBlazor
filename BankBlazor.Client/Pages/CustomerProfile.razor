@@ -1,0 +1,100 @@
+﻿@page "/customerprofile/{CustomerId:int}"
+@using BankBlazor_ClassLibrary.DTOs
+@inject HttpClient HttpClient
+
+<div class="container">
+    @if (customer == null)
+    {
+        <p>Customer not found.</p>
+    }
+    else
+    {
+        <section class="container">
+            <h2>Customer Profile</h2>
+            <div class="info">
+                <p><strong>Name:</strong> @customer.Givenname @customer.Surname</p>
+                <p><strong>Email:</strong> @customer.Emailaddress</p>
+                <p><strong>Phone:</strong> @customer.Telephonenumber</p>
+                <p><strong>Address:</strong> @customer.Streetaddress, @customer.City, @customer.Country</p>
+                <p><strong>Birthday:</strong> @customer.Birthday</p>
+            </div>
+        </section>
+
+        <section class="container">
+            <h2>Accounts</h2>
+            @foreach (var account in customer.Accounts)
+            {
+                <div class="account">
+                    <p><strong>Account ID:</strong> @account.AccountId</p>
+                    <p><strong>Balance:</strong> @account.Balance</p>
+
+                    <div>
+                        <input type="number" @bind="depositAmount" placeholder="Amount" />
+                        <button @onclick="() => Deposit(account.AccountId)">Deposit</button>
+                    </div>
+
+                    <div>
+                        <input type="number" @bind="withdrawAmount" placeholder="Amount" />
+                        <button @onclick="() => Withdraw(account.AccountId)">Withdraw</button>
+                    </div>
+
+                    <div>
+                        <input type="number" @bind="transferAmount" placeholder="Amount" />
+                        <input type="number" @bind="toAccountId" placeholder="To Account ID" />
+                        <button @onclick="() => Transfer(account.AccountId)">Transfer</button>
+                    </div>
+                </div>
+            }
+        </section>
+    }
+</div>
+
+@code {
+    private CustomerDTO customer;
+    [Parameter]
+    public int CustomerId { get; set; }
+
+    private decimal depositAmount;
+    private decimal withdrawAmount;
+    private decimal transferAmount;
+    private int toAccountId;
+    private string message = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            customer = await HttpClient.GetFromJsonAsync<CustomerDTO>($"/api/customer/{CustomerId}");
+        }
+        catch (Exception)
+        {
+            customer = null;
+        }
+    }
+
+    private async Task Deposit(int accountId)
+    {
+        var dto = new AmountDTO { Amount = depositAmount };
+        await HttpClient.PostAsJsonAsync($"/api/account/{accountId}/deposit", dto);
+        customer = await HttpClient.GetFromJsonAsync<CustomerDTO>($"/api/customer/{CustomerId}");
+    }
+
+    private async Task Withdraw(int accountId)
+    {
+        var dto = new AmountDTO { Amount = withdrawAmount };
+        await HttpClient.PostAsJsonAsync($"/api/account/{accountId}/withdraw", dto);
+        customer = await HttpClient.GetFromJsonAsync<CustomerDTO>($"/api/customer/{CustomerId}");
+    }
+
+    private async Task Transfer(int fromAccountId)
+    {
+        var dto = new TransferDTO
+        {
+            FromAccountId = fromAccountId,
+            ToAccountId = toAccountId,
+            Amount = transferAmount
+        };
+        await HttpClient.PostAsJsonAsync("/api/account/transfer", dto);
+        customer = await HttpClient.GetFromJsonAsync<CustomerDTO>($"/api/customer/{CustomerId}");
+    }
+}
