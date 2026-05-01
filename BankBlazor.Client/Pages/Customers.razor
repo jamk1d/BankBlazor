@@ -1,0 +1,67 @@
+﻿@page "/customers"
+@using BankBlazor_ClassLibrary.DTOs
+@inject HttpClient HttpClient
+
+<div class="container">
+    @if (pagedResult == null)
+    {
+        <p>Could not load Customers</p>
+    }
+    else
+    {
+        <section class="container">
+            <h3>Customers</h3>
+            @foreach (var customer in pagedResult.Customers)
+            {
+                <div class="info">
+                    <a href="/customerprofile/@customer.CustomerId">View Profile</a>
+
+                    <p><strong>CustomerId:</strong> @customer.CustomerId</p>
+                    <p><strong>Name:</strong> @customer.Givenname</p>
+                    <p><strong>Surname:</strong> @customer.Surname</p>
+                </div>
+            }
+
+            <div>
+                <button @onclick="PreviousPage" disabled="@(currentPage == 1)">Previous</button>
+                <span>Page @currentPage of @pagedResult.TotalPages</span>
+                <button @onclick="NextPage" disabled="@(currentPage == pagedResult.TotalPages)">Next</button>
+            </div>
+        </section>
+    }
+</div>
+
+@code {
+    private PagedResult<CustomerViewDTO> pagedResult;
+    private int currentPage = 1;
+    private int pageSize = 10;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCustomers();
+    }
+
+    private async Task LoadCustomers()
+    {
+        try
+        {
+            pagedResult = await HttpClient.GetFromJsonAsync<PagedResult<CustomerViewDTO>>($"/api/customer?pageNumber={currentPage}&pageSize={pageSize}");
+        }
+        catch (Exception)
+        {
+            pagedResult = null;
+        }
+    }
+
+    private async Task NextPage()
+    {
+        currentPage++;
+        await LoadCustomers();
+    }
+
+    private async Task PreviousPage()
+    {
+        currentPage--;
+        await LoadCustomers();
+    }
+}
