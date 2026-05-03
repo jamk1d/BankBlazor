@@ -1,4 +1,7 @@
 ﻿@page "/"
+@inject HttpClient httpClient
+@using BankBlazor.Client.Models
+
 
 <PageTitle>Home</PageTitle>
 
@@ -9,7 +12,7 @@
 </section>
 
 <section id="greeting" class="container">
-    <h2>Hello Admin! The next Scottish bank holiday is <strong>{holiday}</strong> on <strong>{date}</strong></h2>
+    <h2>Hello Admin! The next Scottish bank holiday is <strong>@holidayName</strong> on <strong>@holidayDate</strong></h2>
 </section>
 
 
@@ -32,3 +35,23 @@
     <button>Withdraw</button>
     <button>Transfer</button>
 </section>
+
+
+@code
+{
+    private string holidayName;
+    private string holidayDate;
+    private Event nextHoliday;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var root = await httpClient.GetFromJsonAsync<Root>("https://www.gov.uk/bank-holidays.json");
+
+        var nextHoliday = root.scotland.events
+        .Where(e => DateOnly.Parse(e.date) > DateOnly.FromDateTime(DateTime.Now))
+        .FirstOrDefault();
+
+        holidayName = nextHoliday.title;
+        holidayDate = nextHoliday.date;
+    }
+}
