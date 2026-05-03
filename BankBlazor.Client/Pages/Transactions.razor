@@ -1,0 +1,57 @@
+﻿@page "/Transactions/{accountId:int}"
+@using BankBlazor_ClassLibrary.DTOs;
+@inject HttpClient HttpClient
+
+<div class="container">
+    
+	@if(transactions == null)
+	{
+		<p> Transactions could not be loaded </p>
+	}
+	else
+	{
+		<section class="container">
+
+			<h3>Transactions</h3>
+			@foreach(var transaction in transactions)
+			{
+				<div class="info">
+
+					<p><strong>Date:</strong> @transaction.Date</p>
+					<p><strong>Type:</strong> @transaction.Type </p>
+					<p><strong>Ammount:</strong> @transaction.Amount </p>
+					<p><strong>Balance:</strong> @transaction.Balance </p>
+
+				</div>
+			}
+
+
+
+		</section>
+	}
+
+
+</div>
+
+
+
+
+
+@code {
+	private List<TransactionDTO> transactions;
+
+	[Parameter]
+	public int accountId { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			transactions = await HttpClient.GetFromJsonAsync<List<TransactionDTO>>($"api/account/{accountId}/transactions");
+		}
+		catch(Exception)
+		{
+			transactions = null;
+		}
+	}
+}

@@ -28,6 +28,8 @@
                     <p><strong>Account ID:</strong> @account.AccountId</p>
                     <p><strong>Balance:</strong> @account.Balance kr</p>
 
+                    <a href="/transactions/@account.AccountId">View Transactions</a>
+
                     <div>
                         <label>Deposit Amount</label>
                         <input type="number" @bind="depositAmount" placeholder="Enter amount" />
