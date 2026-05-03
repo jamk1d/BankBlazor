@@ -1,6 +1,12 @@
 ﻿@page "/customerprofile/{CustomerId:int}"
 @using BankBlazor_ClassLibrary.DTOs
 @inject HttpClient HttpClient
+@inject NavigationManager Navigation
+
+<div class="container">
+    <input type="number" @bind="searchId" placeholder="Enter Customer ID" />
+    <button @onclick="SearchCustomer">Search</button>
+</div>
 
 <div class="container">
     @if (customer == null)
@@ -19,7 +25,6 @@
                 <p><strong>Birthday:</strong> @customer.Birthday</p>
             </div>
         </section>
-
         <section class="container">
             <h2>Accounts</h2>
             @foreach (var account in customer.Accounts)
@@ -27,21 +32,17 @@
                 <div class="account">
                     <p><strong>Account ID:</strong> @account.AccountId</p>
                     <p><strong>Balance:</strong> @account.Balance kr</p>
-
                     <a href="/transactions/@account.AccountId">View Transactions</a>
-
                     <div>
                         <label>Deposit Amount</label>
                         <input type="number" @bind="depositAmount" placeholder="Enter amount" />
                         <button @onclick="() => Deposit(account.AccountId)">Deposit</button>
                     </div>
-
                     <div>
                         <label>Withdraw Amount</label>
                         <input type="number" @bind="withdrawAmount" placeholder="Enter amount" />
                         <button @onclick="() => Withdraw(account.AccountId)">Withdraw</button>
                     </div>
-
                     <div>
                         <label>Transfer Amount</label>
                         <input type="number" @bind="transferAmount" placeholder="Enter amount" />
@@ -59,12 +60,11 @@
     private CustomerDTO customer;
     [Parameter]
     public int CustomerId { get; set; }
-
     private decimal depositAmount;
     private decimal withdrawAmount;
     private decimal transferAmount;
     private int toAccountId;
-    private string message = "";
+    private int searchId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -76,6 +76,11 @@
         {
             customer = null;
         }
+    }
+
+    private void SearchCustomer()
+    {
+        Navigation.NavigateTo($"/customerprofile/{searchId}");
     }
 
     private async Task Deposit(int accountId)
