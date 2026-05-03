@@ -75,6 +75,19 @@ namespace BankBlazor.api.Controllers
             
         }
 
+        [HttpGet("{accountId}/transactions")]
+        public async Task<ActionResult> GetTransactions(int accountId)
+        {
+            var transactions = await _accountService.GetTransactions(accountId);
+
+            if (transactions == null)
+            {
+                return NotFound();
+            }
+
+            return Ok (transactions);
+        }
+
 
     }
 }
