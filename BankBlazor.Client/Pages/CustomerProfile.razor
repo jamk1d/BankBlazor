@@ -66,17 +66,18 @@
     private int toAccountId;
     private int searchId;
 
-    protected override async Task OnInitializedAsync()
+
+  protected override async Task OnParametersSetAsync()
+  {
+    try
     {
-        try
-        {
-            customer = await HttpClient.GetFromJsonAsync<CustomerDTO>($"/api/customer/{CustomerId}");
-        }
-        catch (Exception)
-        {
-            customer = null;
-        }
+        customer = await HttpClient.GetFromJsonAsync<CustomerDTO>($"/api/customer/{CustomerId}");
     }
+    catch (Exception)
+    {
+        customer = null;
+    }
+  }
 
     private void SearchCustomer()
     {
