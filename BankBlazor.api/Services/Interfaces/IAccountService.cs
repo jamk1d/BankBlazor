@@ -5,6 +5,7 @@ namespace BankBlazor.api.Services.Interfaces
 {
     public interface IAccountService
     {
+
         Task<AccountDTO> GetAccountBalance(int accountId);
 
         Task<ResponseCode> Deposit(int accountId, decimal ammount);
@@ -12,5 +13,7 @@ namespace BankBlazor.api.Services.Interfaces
         Task<ResponseCode> Withdraw(int accountId, decimal amount);
 
         Task<ResponseCode> Transfer(int fromAccountId, int toAccountId, decimal ammount);
+
+        Task<List<TransactionDTO>> GetTransactions(int accountId);
     }
 }

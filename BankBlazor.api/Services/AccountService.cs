@@ -148,6 +148,33 @@ namespace BankBlazor.api.Services
             
         }
 
+        public async Task<List<TransactionDTO>> GetTransactions(int accountId)
+        {
+            var transactions = await _dbContext.Accounts.Include(t => t.Transactions).FirstOrDefaultAsync(a => a.AccountId == accountId);
+
+            if (transactions == null)
+            {
+                return null;
+            }
+
+            return transactions.Transactions.Select(t => new TransactionDTO
+            {
+                AccountId = t.AccountId,
+                Date = t.Date,
+                Type = t.Type,
+                Operation = t.Operation,
+                Amount = t.Amount,
+                Balance = t.Balance,
+                Symbol = t.Symbol,
+                Bank = t.Bank,
+                Account = t.Account
+
+
+            }).ToList();
+
+            
+        }
+
 
 
 
