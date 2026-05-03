@@ -157,7 +157,9 @@ namespace BankBlazor.api.Services
                 return null;
             }
 
-            return transactions.Transactions.Select(t => new TransactionDTO
+            return transactions.Transactions
+                .OrderByDescending(t => t.Date)
+                .Select(t => new TransactionDTO
             {
                 AccountId = t.AccountId,
                 Date = t.Date,
