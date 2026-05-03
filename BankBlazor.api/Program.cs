@@ -27,13 +27,14 @@ namespace BankBlazor.api
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll", policy =>
+                options.AddPolicy("AllowBlazorClient", builder =>
                 {
-                    policy.AllowAnyOrigin()
-                          .AllowAnyMethod()
-                          .AllowAnyHeader();
+                    builder.WithOrigins("https://bankblazorclient-jamal-cvcyf8bwb5ahabbq.germanywestcentral-01.azurewebsites.net")
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
                 });
             });
+
 
             var app = builder.Build();
 
@@ -48,7 +49,7 @@ namespace BankBlazor.api
 
             app.UseAuthorization();
 
-            app.UseCors("AllowAll");
+            app.UseCors("AllowBlazorClient");
 
             app.MapControllers();
 
